@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from typing import List
+
 
 app = FastAPI()
 
@@ -19,3 +21,11 @@ def crear_tarea(tarea: Tarea):
 @app.get("/")
 def ruta_raiz():
     return { "Entrando": "Bienvenido a To Do List"}
+
+
+
+#Obtener todas las tareas
+
+@app.get("/tareas",response_model=List[Tarea])
+def traer_tareas():
+    return tareas
