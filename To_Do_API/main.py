@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
 
@@ -12,6 +12,8 @@ class Tarea(BaseModel):
     completed : bool = False
 
 tareas = []
+
+#Crear tareas
 
 @app.post("/tareas")
 def crear_tarea(tarea: Tarea):
@@ -29,3 +31,12 @@ def ruta_raiz():
 @app.get("/tareas",response_model=List[Tarea])
 def traer_tareas():
     return tareas
+
+#Obtener una tarea especifica
+
+@app.get("/tareas/{tarea_id}", response_model=Tarea)
+def traer_tarea(tarea_id:int):
+    for tarea in tareas:
+        if tarea.id == tarea_id:
+            return tarea
+    raise HTTPException(status_code=404,detail="Tarea no encontrada")
