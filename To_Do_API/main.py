@@ -50,3 +50,13 @@ def update_tarea(tarea_id: int, update_tarea: Tarea):
             tareas[index] = update_tarea
             return update_tarea
     raise HTTPException(status_code=404, detail="Tarea no encontrada")
+
+
+#Eliminar tareas
+@app.delete("/tarea/{trea_id}", response_model=Tarea)
+def eliminar_tarea(tarea_id:int):
+    for tarea in tareas:
+        if tarea.id == tarea_id:
+            tareas.remove(tarea)
+            return tarea
+    raise HTTPException(status_code=404, detail="Tarea no encontrada")
