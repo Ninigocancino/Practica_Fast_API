@@ -13,6 +13,7 @@ class Tarea(BaseModel):
 
 tareas = []
 
+"""
 #Crear tareas
 
 @app.post("/tareas")
@@ -20,13 +21,27 @@ def crear_tarea(tarea: Tarea):
     tareas.append(tarea)
     return tarea
 
+"""
+
+#10.-Evitar IDs duplicado (modificación a 'crear tareas)
+@app.post("/tareas", response_model=Tarea)
+def crear_tarea(tarea: Tarea):
+    for tarea_existe in tareas:
+        if tarea_existe.id == tarea.id:
+            raise HTTPException(status_code=400,deatil="El ID de la tarea ya existe")
+    tareas.append(tarea)
+    return tarea
+
+
+
+
 @app.get("/")
 def ruta_raiz():
     return { "Entrando": "Bienvenido a To Do List"}
 
 
 
-#Obtener todas las tareas
+#2.-Obtener todas las tareas
 
 @app.get("/tareas",response_model=List[Tarea])
 def traer_tareas():
@@ -60,3 +75,4 @@ def eliminar_tarea(tarea_id:int):
             tareas.remove(tarea)
             return tarea
     raise HTTPException(status_code=404, detail="Tarea no encontrada")
+
