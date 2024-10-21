@@ -33,3 +33,11 @@ def agregar_libro(libro: Libro):
 @app.get("/libros", response_model=List[Libro])
 def traer_libros():
     return libros
+
+#Ruta para obtener un libro especifico por su ID
+@app.get("/libros/{libro_id}", response_model=Libro)
+def traer_libro(libro_id: int):
+    for libro in libros:
+        if libro.id == libro_id:
+            return libro
+    raise HTTPException(status_code=404, detail="Libro no encontrado")
