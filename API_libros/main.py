@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from typing import List
 
 app = FastAPI()
 
@@ -27,3 +28,8 @@ def agregar_libro(libro: Libro):
     libros.append(libro)
     return libro
     
+
+#Ruta para obtener todos los libros
+@app.get("/libros", response_model=List[Libro])
+def traer_libros():
+    return libros
