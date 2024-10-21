@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -8,7 +8,7 @@ def traer_ruta():
     return {"message": "Bienvenido a nuestra API de gestión de libros"}
 
 #Modelo de datos 
-class libro(BaseModel):
+class Libro(BaseModel):
     id:int
     title: str
     author: str
@@ -17,3 +17,13 @@ class libro(BaseModel):
     available: bool = True 
 
 libros = []
+
+#Ruta para agregar un libro al API
+@app.post("/books", response_model=Libro)
+def agregar_libro(libro: Libro):
+    for libro_existente in libros:
+        if libro_existente.id == libro.id:
+            raise HTTPException(status_code=400, detail="El ID del libro ya existe")
+    libros.append(libro)
+    return libro
+    
