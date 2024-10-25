@@ -41,3 +41,12 @@ def traer_libro(libro_id: int):
         if libro.id == libro_id:
             return libro
     raise HTTPException(status_code=404, detail="Libro no encontrado")
+
+#Ruta para actualizar información
+@app.put("/libros/{libro_id}", response_model=Libro)
+def actualizar_libro(libro_id: int, update_libro: Libro):
+    for index, libro in  enumerate(libros):
+        if libro.id == libro_id:
+            libros[index] = update_libro
+            return update_libro
+    raise HTTPException(status_code=404, detail="Libro no encontrado")
