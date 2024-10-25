@@ -50,3 +50,13 @@ def actualizar_libro(libro_id: int, update_libro: Libro):
             libros[index] = update_libro
             return update_libro
     raise HTTPException(status_code=404, detail="Libro no encontrado")
+
+#Ruta para eliminar un libro
+@app.delete("/libros/{libro_id}",response_model=Libro)
+def delete_libro(libro_id: int):
+    for libro in libros:
+        if libro.id == libro_id:
+            libros.remove(libro)
+            return libro
+    raise HTTPException(status_code=404, detail="Libro no encontrado")
+
