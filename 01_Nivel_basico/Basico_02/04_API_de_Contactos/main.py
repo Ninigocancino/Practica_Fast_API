@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
+from uuid import uuid, UUID
 
 app = FastAPI()
 
@@ -9,6 +10,7 @@ contactos = []
 
 #Esta es la estructura de datos para los contactos
 class Contacto(BaseModel):
+    id: UUID
     nombre: str
     email: str
     telefono: str
