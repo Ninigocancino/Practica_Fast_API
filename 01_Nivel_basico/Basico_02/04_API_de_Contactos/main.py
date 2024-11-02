@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
 from uuid import uuid, UUID
@@ -26,6 +26,15 @@ def leer_ruta():
 @app.get("/contactos/", response_model=List[Contacto])
 def traer_contactos():
     return  contactos
+
+# Esta ruta permite obtener un contacto por su id
+@app.get("/contactos/{contacto_id}", response_model=Contacto)
+def traer_contacto(contacto_id: UUID):
+    for contacto in contactos:
+        if contacto.id == contacto_id:
+            return contacto
+    raise HTTPException(status_code=404,detail="Contacto no encontrado")
+
 
 # Esta ruta permite agregar un nuevo contacto
 @app.post("/Agregar/", response_model=Contacto)
