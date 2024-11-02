@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
-from uuid import uuid, UUID
+from uuid import uuid4, UUID
 
 app = FastAPI()
 
@@ -42,5 +42,15 @@ def agregar_contacto(contacto: Contacto):
     contactos.append(contacto)
     return contacto
 
+
+# Esta ruta permite actualizar un contacto existente
+@app.put("/contactos/{contacto_id}", response_model=Contacto)
+def actualizar_contacto(contacto_id:UUID, update_contacto: Contacto):
+    for index, contacto in enumerate(contactos):
+        if contacto.id == contacto_id:
+            contactos[index] = update_contacto
+            contactos[index].id = contacto_id 
+            return contactos[index]
+    raise HTTPException(status_code=404, detail="Contacto no encontrado")
 
 
