@@ -54,3 +54,10 @@ def actualizar_contacto(contacto_id:UUID, update_contacto: Contacto):
     raise HTTPException(status_code=404, detail="Contacto no encontrado")
 
 
+#Falta la ruta para eliminar un dato
+@app.delete("/contactos/{contactos_id}")
+def eliminar_contacto(contacto_id: UUID):
+    global contactos
+    contactos = [contacto for contacto in contactos if contacto.id != contacto_id]
+    return {"detalle": "Contacto eliminado"}
+
